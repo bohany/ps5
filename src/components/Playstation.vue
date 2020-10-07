@@ -22,7 +22,7 @@
       <p v-if="targetAvailability == ''">
         Click "Check All Stores" above to Check Availability
       </p>
-      <p v-else-if="targetAvailability == 'PRE_ORDER_UNSELLABLE'">
+      <p v-else-if="targetAvailability == 'PRE_ORDER_UNSELLABLE' && targetStock === 0">
         Still not in stock at Target
       </p>
       <p v-else>
@@ -122,7 +122,7 @@ export default {
     targetAvailability() {
       const song = document.querySelector("#song");
       song.loop = true;
-      if (this.targetAvailability !== "PRE_ORDER_UNSELLABLE" && this.targetAvailability !== "") {
+      if (this.targetAvailability !== "PRE_ORDER_UNSELLABLE" && this.targetAvailability !== "" && this.targetStock != 0) {
         alert("It's available at Target!");
         song.play();
       }
