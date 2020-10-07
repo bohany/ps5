@@ -122,7 +122,7 @@ export default {
     targetAvailability() {
       const song = document.querySelector("#song");
       song.loop = true;
-      if (this.targetAvailability !== "PRE_ORDER_UNSELLABLE" && "") {
+      if (this.targetAvailability !== "PRE_ORDER_UNSELLABLE" && this.targetAvailability !== "") {
         alert("It's available at Target!");
         song.play();
       }
