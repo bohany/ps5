@@ -5,12 +5,13 @@
     <p v-if="toggleInstructions">
       Click the "CHECK ALL STORES" button to start the program and check if the
       PS5 is available at all stores listed below. The stores will then
-      auto-refresh every ten minutes. If in stock, this app will play a song to alert you, at that time you can click the "GRAB IT" button on the
-      individual store to buy it there. Refresh the page or close the browser 
+      auto-refresh every ten minutes. If in stock, this app will play a song to
+      alert you, at that time you can click the "GRAB IT" button on the
+      individual store to buy it there. Refresh the page or close the browser
       tab to stop auto-checking.
     </p>
     <button class="btn" @click="start">CHECK ALL STORES</button>
-    <p>Stores will refresh in {{counter}} seconds</p>
+    <p>Stores will refresh in {{ counter }} seconds</p>
   </div>
 
   <div class="container">
@@ -25,7 +26,7 @@
         Still not in stock at Target
       </p>
       <p v-else>
-        It's here! Get it! There are {{ targetStock }} units in stock!
+        IT'S HERE! GRAB IT! There are {{ targetStock }} units in stock!
       </p>
       <a
         href="https://www.target.com/p/playstation-5-console/-/A-81114595?crushProductId=81114595"
@@ -45,9 +46,7 @@
       <p v-else-if="walmartAvailability == false">
         Still not in stock at Walmart
       </p>
-      <p v-else>
-        It's here! Get it now!
-      </p>
+      <p v-else>It's here! Get it now!</p>
       <a
         href="https://www.walmart.com/ip/PlayStation5-Console/363472942"
         target="_blank"
@@ -57,7 +56,7 @@
     </div>
   </div>
 
-  <div class='container'>
+  <div class="container">
     <div class="card">
       <img
         src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fstovetecstore.net%2Fwp-content%2Fuploads%2F2016%2F09%2Famazon-transparent-logo-a.png&f=1&nofb=1"
@@ -83,7 +82,6 @@
       >
     </div>
   </div>
-  
 
   <audio
     id="song"
@@ -116,7 +114,7 @@ export default {
     amazonAvailability() {
       const song = document.querySelector("#song");
       song.loop = true;
-      if (this.amazonAvailability == false) {
+      if (this.amazonAvailability === false) {
         alert("It's available at Amazon!");
         song.play();
       }
@@ -132,16 +130,16 @@ export default {
     walmartAvailability() {
       const song = document.querySelector("#song");
       song.loop = true;
-      if (this.walmartAvailability == true) {
+      if (this.walmartAvailability === true) {
         alert("It's available at Walmart!");
         song.play();
       }
     },
-    counter(){
+    counter() {
       if (this.counter <= 0) {
         this.counter = 600;
       }
-    }
+    },
   },
   methods: {
     showHide() {
@@ -153,7 +151,9 @@ export default {
       song.play();
     },
     start() {
-      setInterval(()=>{this.counter--}, 1000);
+      setInterval(() => {
+        this.counter--;
+      }, 1000);
       let checkBB = () => {
         Axios.request({
           baseURL: "https://api.bestbuy.com/v1/products/",
@@ -226,27 +226,29 @@ export default {
       };
 
       let checkWalmart = () => {
-          Axios.request({
-            method:"GET",
-            url:"https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-product",
-            headers:{
-            "content-type":"application/octet-stream",
-            "x-rapidapi-host":"axesso-walmart-data-service.p.rapidapi.com",
-            "x-rapidapi-key":"f76ab48dd8mshc870381c400304dp199e58jsn2a55c36faffa",
-            "useQueryString":true
-            },
-            params:{
-            url:"https://www.walmart.com/ip/PlayStation5-Console/363472942"
-            }
-            })
-            .then(response=>{
-              this.walmartAvailability = response.data.available;
-              this.walmartResult = response.data;
-            })
-            .catch((error)=>{
-              console.log(error)
-            })
-      }
+        Axios.request({
+          method: "GET",
+          url:
+            "https://axesso-walmart-data-service.p.rapidapi.com/wlm/walmart-lookup-product",
+          headers: {
+            "content-type": "application/octet-stream",
+            "x-rapidapi-host": "axesso-walmart-data-service.p.rapidapi.com",
+            "x-rapidapi-key":
+              "f76ab48dd8mshc870381c400304dp199e58jsn2a55c36faffa",
+            useQueryString: true,
+          },
+          params: {
+            url: "https://www.walmart.com/ip/PlayStation5-Console/363472942",
+          },
+        })
+          .then((response) => {
+            this.walmartAvailability = response.data.available;
+            this.walmartResult = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
 
       checkBB();
       checkTarget();
@@ -255,7 +257,7 @@ export default {
       setInterval(checkTarget, 600000);
       setInterval(checkAmazon, 600000);
       setInterval(checkBB, 600000);
-      setInterval(checkWalmart, 600000)
+      setInterval(checkWalmart, 600000);
     },
   },
 };
@@ -268,6 +270,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin: 1vmin;
+  transition: all 0.2s;
 }
 
 .titleCard {
@@ -280,6 +283,7 @@ export default {
   justify-content: center;
   display: flex;
   flex-direction: column;
+  transition: all 0.2s;
 }
 
 .titleCard:hover {
@@ -305,6 +309,7 @@ img {
   background-color: linen;
   border-radius: 20px;
   width: 30vw;
+  transition: all 0.2s;
 }
 
 .card:hover {
@@ -314,6 +319,7 @@ img {
   padding: 5vmin;
   background-color: linen;
   border-radius: 20px;
+  transition: all 0.2s;
 }
 
 .btn {
@@ -327,11 +333,13 @@ img {
   word-wrap: break-word;
   font-size: 16px;
   margin: 2vmin;
+  transition: all 0.2s;
 }
 
 .btn:hover {
   box-shadow: 5px 5px 5px grey;
   background-color: rgb(72, 99, 219);
   border: solid 1px white;
+  transition: all 0.2s;
 }
 </style>
