@@ -22,7 +22,12 @@
       <p v-if="targetAvailability == ''">
         Click "Check All Stores" above to Check Availability
       </p>
-      <p v-else-if="targetAvailability == 'PRE_ORDER_UNSELLABLE' && targetStock === 0">
+      <p
+        v-else-if="
+          targetAvailability === 'OUT_OF_STOCK' ||
+          targetAvailability === 'PRE_ORDER_UNSELLABLE'
+        "
+      >
         Still not in stock at Target
       </p>
       <p v-else>
@@ -40,10 +45,10 @@
       <img
         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.evolveyourweddingbusiness.com%2Fwp-content%2Fuploads%2F2017%2F03%2FPNGPIX-COM-Walmart-Vertical-Logo-PNG-Transparent.png&f=1&nofb=1"
       />
-      <p v-if="walmartAvailability == null">
+      <p v-if=" walmartError == null || walmartAvailability == null">
         Click "Check All Stores" above to Check Availability
       </p>
-      <p v-else-if="walmartAvailability == false">
+      <p v-else-if=" walmartError !== null || walmartAvailability === false">
         Still not in stock at Walmart
       </p>
       <p v-else>It's here! Get it now!</p>
@@ -106,6 +111,8 @@ export default {
       amazonResult: null,
       amazonAvailability: null,
       walmartAvailability: null,
+      walmartResult: null,
+      walmartError: null,
       counter: 600,
     };
   },
@@ -122,7 +129,11 @@ export default {
     targetAvailability() {
       const song = document.querySelector("#song");
       song.loop = true;
-      if (this.targetAvailability !== "PRE_ORDER_UNSELLABLE" && this.targetAvailability !== "" && this.targetStock != 0) {
+      if (
+        this.targetAvailability !== "PRE_ORDER_UNSELLABLE" &&
+        this.targetAvailability !== "" &&
+        this.targetAvailability !== "OUT_OF_STOCK"
+      ) {
         alert("It's available at Target!");
         song.play();
       }
@@ -246,7 +257,7 @@ export default {
             this.walmartResult = response.data;
           })
           .catch((error) => {
-            console.log(error);
+            this.walmartError = error;
           });
       };
 
